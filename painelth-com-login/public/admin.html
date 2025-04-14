@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel Admin</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      margin-top: 100px;
+    }
+    h1 { color: #333; }
+    #valor { font-size: 2em; color: green; }
+    #login-box { display: block; }
+    #painel { display: none; }
+  </style>
+</head>
+<body>
+  <div id="login-box">
+    <h1>Login</h1>
+    <input type="password" id="senha" placeholder="Digite a senha" />
+    <button onclick="login()">Entrar</button>
+    <p id="erro" style="color: red;"></p>
+  </div>
+
+  <div id="painel">
+    <h1>Total de Doações Recebidas</h1>
+    <div id="valor">Carregando...</div>
+  </div>
+
+  <script>
+    const SENHA_CORRETA = "admin123"; // Você pode mudar essa senha
+
+    function login() {
+      const senha = document.getElementById("senha").value;
+      if (senha === SENHA_CORRETA) {
+        document.getElementById("login-box").style.display = "none";
+        document.getElementById("painel").style.display = "block";
+
+        fetch('/api/total-doacoes')
+          .then(res => res.json())
+          .then(data => {
+            document.getElementById('valor').innerText = `R$ ${data.total.toFixed(2)}`;
+          })
+          .catch(() => {
+            document.getElementById('valor').innerText = 'Erro ao carregar';
+          });
+
+      } else {
+        document.getElementById("erro").innerText = "Senha incorreta.";
+      }
+    }
+  </script>
+</body>
+</html>
