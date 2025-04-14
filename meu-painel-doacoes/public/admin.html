@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel Admin</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      margin-top: 100px;
+    }
+    h1 {
+      color: #333;
+    }
+    #valor {
+      font-size: 2em;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <h1>Total de Doações Recebidas</h1>
+  <div id="valor">Carregando...</div>
+
+  <script>
+    fetch('/api/total-doacoes')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('valor').innerText = `R$ ${data.total.toFixed(2)}`;
+      })
+      .catch(() => {
+        document.getElementById('valor').innerText = 'Erro ao carregar';
+      });
+  </script>
+</body>
+</html>
